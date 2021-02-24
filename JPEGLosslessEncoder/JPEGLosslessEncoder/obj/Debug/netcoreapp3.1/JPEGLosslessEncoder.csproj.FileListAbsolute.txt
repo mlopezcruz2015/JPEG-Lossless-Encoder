@@ -1,0 +1,13 @@
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\bin\Debug\netcoreapp3.1\JPEGLosslessEncoder.exe
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\bin\Debug\netcoreapp3.1\JPEGLosslessEncoder.deps.json
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\bin\Debug\netcoreapp3.1\JPEGLosslessEncoder.runtimeconfig.json
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\bin\Debug\netcoreapp3.1\JPEGLosslessEncoder.runtimeconfig.dev.json
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\bin\Debug\netcoreapp3.1\JPEGLosslessEncoder.dll
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\bin\Debug\netcoreapp3.1\JPEGLosslessEncoder.pdb
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\obj\Debug\netcoreapp3.1\JPEGLosslessEncoder.csprojAssemblyReference.cache
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\obj\Debug\netcoreapp3.1\JPEGLosslessEncoder.AssemblyInfoInputs.cache
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\obj\Debug\netcoreapp3.1\JPEGLosslessEncoder.AssemblyInfo.cs
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\obj\Debug\netcoreapp3.1\JPEGLosslessEncoder.csproj.CoreCompileInputs.cache
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\obj\Debug\netcoreapp3.1\JPEGLosslessEncoder.dll
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\obj\Debug\netcoreapp3.1\JPEGLosslessEncoder.pdb
+C:\Users\mlopezcruz2015\Documents\JPEG-Lossless-Encoder\JPEGLosslessEncoder\JPEGLosslessEncoder\obj\Debug\netcoreapp3.1\JPEGLosslessEncoder.genruntimeconfig.cache
