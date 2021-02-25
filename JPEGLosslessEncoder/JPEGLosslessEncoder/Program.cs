@@ -80,39 +80,46 @@ namespace JPEGLosslessEncoder
 
         static void Main(string[] args)
         {
-            //string path = Directory.GetCurrentDirectory();
-            string text = System.IO.File.ReadAllText(@"image.txt").Replace("\r\n", " ");
-            var formattedText = text.Split(" ");
-
-            //Use a 2d array to store original image.
-            int[,] originalImage = new int[16, 16];
-
-            for (int i = 0; i < formattedText.Length; i++)
+            try
             {
-                originalImage[i / 16, i % 16] = int.Parse(formattedText[i]);
+                //string path = Directory.GetCurrentDirectory();
+                string text = System.IO.File.ReadAllText(@"image.txt").Replace("\r\n", " ");
+                var formattedText = text.Split(" ");
+
+                //Use a 2d array to store original image.
+                int[,] originalImage = new int[16, 16];
+
+                for (int i = 0; i < formattedText.Length; i++)
+                {
+                    originalImage[i / 16, i % 16] = int.Parse(formattedText[i]);
+                }
+
+                if (originalImage.Length != 256)
+                {
+                    Console.WriteLine("Program Stopped, bad data. Image must be 16x16.");
+                    return;
+                }
+
+
+                for (int i = 1; i < 8; i++)
+                {
+                    var coefficients = RunEncoderFormula(i, originalImage);
+
+                    RunEncoderAndDecoder(i, coefficients);
+                    RunCalculations(i, originalImage, coefficients);
+
+                    Console.WriteLine("________________________________________________________________________________________________");
+                    Console.WriteLine(Environment.NewLine);
+                }
             }
-
-            if (originalImage.Length != 256)
+            catch (Exception ex)
             {
-                Console.WriteLine("Program Stopped, bad data. Image must be 16x16.");
-                return;
-            }
-
-
-            for (int i = 1; i < 8; i++)
-            {
-                var coefficients = RunEncoderFormula(i, originalImage);
-
-                RunEncoderAndDecoder(i, coefficients);
-                RunCalculations(i, originalImage, coefficients);
-
-                Console.WriteLine("________________________________________________________________________________________________");
-                Console.WriteLine(Environment.NewLine);
+                Console.WriteLine($"Error running program - {ex.Message}");
             }
         }
 
         /// <summary>
-        /// 
+        /// Returns Encoded array using the index i as the selector for which formula to use for the encoding.
         /// </summary>
         /// <param name="i"></param>
         private static int[,] RunEncoderFormula(int i, int[,] array)
@@ -217,13 +224,17 @@ namespace JPEGLosslessEncoder
         /// <returns></returns>
         static int[,] FourthFormula(int[,] array)
         {
+            Console.WriteLine("Running Fourth Formula X = A + B - C.");
+            Console.WriteLine("Original 16x16 image:");
+            print2DArray(array);
+
             int[,] coefficients = InitializeCoefficientsArray(array);
 
             for (int i = 1; i < 16; i++)
             {
                 for (int j = 1; j < 16; j++)
                 {
-                    //coefficients[i, j] = DoXEqualsB(array, i, j);
+                    coefficients[i, j] = array[i, j] - (array[i, j - 1] + array[i - 1, j] - array[i - 1, j - 1]);
                 }
             }
 
@@ -237,13 +248,18 @@ namespace JPEGLosslessEncoder
         /// <returns></returns>
         static int[,] FifthFormula(int[,] array)
         {
+            Console.WriteLine("Running Fifth Formula X = A + (B - C)/2.");
+            Console.WriteLine("Original 16x16 image:");
+            print2DArray(array);
+
             int[,] coefficients = InitializeCoefficientsArray(array);
 
             for (int i = 1; i < 16; i++)
             {
                 for (int j = 1; j < 16; j++)
                 {
-                    //coefficients[i, j] = DoXEqualsB(array, i, j);
+                    var x = (int)Math.Ceiling((double)((array[i - 1, j] - array[i - 1, j - 1]) / 2));
+                    coefficients[i, j] = array[i, j] - (array[i, j - 1] + x);
                 }
             }
 
@@ -257,13 +273,18 @@ namespace JPEGLosslessEncoder
         /// <returns></returns>
         static int[,] SixthFormula(int[,] array)
         {
+            Console.WriteLine("Running Sixth Formula X = B + (A - C)/2.");
+            Console.WriteLine("Original 16x16 image:");
+            print2DArray(array);
+
             int[,] coefficients = InitializeCoefficientsArray(array);
 
             for (int i = 1; i < 16; i++)
             {
                 for (int j = 1; j < 16; j++)
                 {
-                    //coefficients[i, j] = DoXEqualsB(array, i, j);
+                    var x = (int)Math.Ceiling((double)((array[i, j - 1] - array[i - 1, j - 1]) / 2));
+                    coefficients[i, j] = array[i, j] - (array[i - 1, j] + x);
                 }
             }
 
@@ -277,13 +298,18 @@ namespace JPEGLosslessEncoder
         /// <returns></returns>
         static int[,] SeventhFormula(int[,] array)
         {
+            Console.WriteLine("Running Seventh Formula X = (A + B)/2.");
+            Console.WriteLine("Original 16x16 image:");
+            print2DArray(array);
+
             int[,] coefficients = InitializeCoefficientsArray(array);
 
             for (int i = 1; i < 16; i++)
             {
                 for (int j = 1; j < 16; j++)
                 {
-                    //coefficients[i, j] = DoXEqualsB(array, i, j);
+                    var x = (int)Math.Ceiling((double)((array[i, j - 1] + array[i - 1, j]) / 2));
+                    coefficients[i, j] = array[i, j] - x;
                 }
             }
 
@@ -520,7 +546,7 @@ namespace JPEGLosslessEncoder
             }
             else if (j == 0)
             {
-                return tempArray[i, j - 1] + decodedArray[i - 1, j];
+                return tempArray[i - 1, j] + decodedArray[i - 1, j];
             }
             else
             {
@@ -529,17 +555,20 @@ namespace JPEGLosslessEncoder
                     case 1:
                         return tempArray[i, j - 1] + decodedArray[i, j];
                     case 2:
-                        return tempArray[i, j - 1] + decodedArray[i - 1, j];
+                        return tempArray[i - 1, j] + decodedArray[i, j];
                     case 3:
-                        return tempArray[i, j - 1] + decodedArray[i, j];
+                        return tempArray[i - 1, j - 1] + decodedArray[i, j];
                     case 4:
-                        return tempArray[i, j - 1] + decodedArray[i, j];
+                        return (tempArray[i, j - 1] + tempArray[i - 1, j] - tempArray[i - 1, j - 1]) + decodedArray[i, j];
                     case 5:
-                        return tempArray[i, j - 1] + decodedArray[i, j];
+                        var x = (int)Math.Floor((double)((tempArray[i - 1, j] - tempArray[i - 1, j - 1]) / 2));
+                        return (tempArray[i, j - 1] + x) + decodedArray[i, j];
                     case 6:
-                        return tempArray[i, j - 1] + decodedArray[i, j];
+                        var y = (int)Math.Floor((double)((tempArray[i, j - 1] - tempArray[i - 1, j - 1]) / 2));
+                        return (tempArray[i - 1, j] + y) + decodedArray[i, j];
                     case 7:
-                        return tempArray[i, j - 1] + decodedArray[i, j];
+                        var z = (int)Math.Floor((double)((tempArray[i, j - 1] + tempArray[i - 1, j]) / 2));
+                        return z + decodedArray[i, j];
                     default:
                         return -1;
                 }
