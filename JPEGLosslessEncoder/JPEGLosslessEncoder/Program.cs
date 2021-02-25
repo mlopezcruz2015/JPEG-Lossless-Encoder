@@ -6,7 +6,7 @@ namespace JPEGLosslessEncoder
 {
     class Program
     {
-        //Use the following Huffman table for entropy encoding and decoding
+        //Use the following Huffman table for entropy encoding
         private static string HuffmanTableEncoder(int key)
         {
             switch (key)
@@ -42,6 +42,7 @@ namespace JPEGLosslessEncoder
             }
         }
 
+        //Use the following Huffman table for entropy decoding
         private static int HuffmanTableDecoder(string b)
         {
             switch (b)
