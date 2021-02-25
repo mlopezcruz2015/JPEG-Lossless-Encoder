@@ -6,6 +6,46 @@ namespace JPEGLosslessEncoder
 {
     class Program
     {
+        static void Main(string[] args)
+        {
+            try
+            {
+                //string path = Directory.GetCurrentDirectory();
+                string text = System.IO.File.ReadAllText(@"image.txt").Replace("\r\n", " ");
+                var formattedText = text.Split(" ");
+
+                //Use a 2d array to store original image.
+                int[,] originalImage = new int[16, 16];
+
+                for (int i = 0; i < formattedText.Length; i++)
+                {
+                    originalImage[i / 16, i % 16] = int.Parse(formattedText[i]);
+                }
+
+                if (originalImage.Length != 256)
+                {
+                    Console.WriteLine("Program Stopped, bad data. Image must be 16x16.");
+                    return;
+                }
+
+
+                for (int i = 1; i < 8; i++)
+                {
+                    var coefficients = RunEncoderFormula(i, originalImage);
+
+                    RunEncoderAndDecoder(i, coefficients);
+                    RunCalculations(i, originalImage, coefficients);
+
+                    Console.WriteLine("________________________________________________________________________________________________");
+                    Console.WriteLine(Environment.NewLine);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error running program - {ex.Message}");
+            }
+        }
+
         //Use the following Huffman table for entropy encoding
         private static string HuffmanTableEncoder(int key)
         {
@@ -76,46 +116,6 @@ namespace JPEGLosslessEncoder
                 default:
                     var x = b.PadLeft(8, '0');
                     return Convert.ToInt32(x, 2);
-            }
-        }
-
-        static void Main(string[] args)
-        {
-            try
-            {
-                //string path = Directory.GetCurrentDirectory();
-                string text = System.IO.File.ReadAllText(@"image.txt").Replace("\r\n", " ");
-                var formattedText = text.Split(" ");
-
-                //Use a 2d array to store original image.
-                int[,] originalImage = new int[16, 16];
-
-                for (int i = 0; i < formattedText.Length; i++)
-                {
-                    originalImage[i / 16, i % 16] = int.Parse(formattedText[i]);
-                }
-
-                if (originalImage.Length != 256)
-                {
-                    Console.WriteLine("Program Stopped, bad data. Image must be 16x16.");
-                    return;
-                }
-
-
-                for (int i = 1; i < 8; i++)
-                {
-                    var coefficients = RunEncoderFormula(i, originalImage);
-
-                    RunEncoderAndDecoder(i, coefficients);
-                    RunCalculations(i, originalImage, coefficients);
-
-                    Console.WriteLine("________________________________________________________________________________________________");
-                    Console.WriteLine(Environment.NewLine);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error running program - {ex.Message}");
             }
         }
 
